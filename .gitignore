@@ -34,3 +34,6 @@ compose.override.yaml
 
 # local maintenance notes
 maintain.md
+
+# local planning documents
+docs/

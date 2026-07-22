@@ -1,5 +1,8 @@
 # Astro 博客
 
+[![Deploy GitHub Pages](https://github.com/xjn2005/cavill-blog/actions/workflows/deploy.yml/badge.svg)](https://github.com/xjn2005/cavill-blog/actions/workflows/deploy.yml)
+[![Astro](https://img.shields.io/badge/Astro-7-BC52EE?logo=astro&logoColor=white)](https://astro.build)
+
 基于 AstroPaper 的静态博客。
 
 ## 开发
