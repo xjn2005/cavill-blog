@@ -6,12 +6,13 @@ import {
 } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 import mdx from "@astrojs/mdx";
+import { unified, type RemarkPlugin } from "@astrojs/markdown-remark";
 import sitemap from "@astrojs/sitemap";
 import remarkToc from "remark-toc";
 import remarkCollapse from "remark-collapse";
 import remarkBreaks from "remark-breaks";
 import remarkMath from "remark-math";
-import mdFormat from "@cavillxu/astro-md-format";
+import { remarkMdFormat } from "@cavillxu/astro-md-format";
 import rehypeCallouts from "rehype-callouts";
 import rehypeKatex from "rehype-katex";
 import {
@@ -20,6 +21,7 @@ import {
   transformerNotationWordHighlight,
 } from "@shikijs/transformers";
 import { transformerFileName } from "./src/utils/transformers/fileName";
+import rehypeImageCaptions from "./src/utils/rehypeImageCaptions.js";
 import config from "./astro-paper.config";
 
 export default defineConfig({
@@ -30,7 +32,6 @@ export default defineConfig({
       filter: page =>
         config.features?.showArchives !== false || !page.endsWith("/archives/"),
     }),
-    mdFormat(),
   ],
   i18n: {
     locales: ["en"],
@@ -40,13 +41,16 @@ export default defineConfig({
     },
   },
   markdown: {
-    remarkPlugins: [
-      remarkBreaks,
-      remarkMath,
-      remarkToc,
-      [remarkCollapse, { test: "Table of contents" }],
-    ],
-    rehypePlugins: [rehypeCallouts, rehypeKatex],
+    processor: unified({
+      remarkPlugins: [
+        remarkBreaks,
+        remarkMath,
+        remarkMdFormat as unknown as RemarkPlugin,
+        remarkToc,
+        [remarkCollapse, { test: "Table of contents" }],
+      ],
+      rehypePlugins: [rehypeCallouts, rehypeKatex, rehypeImageCaptions],
+    }),
     shikiConfig: {
       themes: { light: "min-light", dark: "night-owl" },
       defaultColor: false,

@@ -12,5 +12,5 @@ test("configures KaTeX for Markdown math", async () => {
   assert.match(astroConfig, /import remarkMath from "remark-math"/);
   assert.match(astroConfig, /import rehypeKatex from "rehype-katex"/);
   assert.match(layout, /katex\.min\.css/);
-  assert.match(typography, /\.prose \.katex-display/);
+  assert.match(typography, /\.app-prose \.katex-display/);
 });

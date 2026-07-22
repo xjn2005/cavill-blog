@@ -47,6 +47,18 @@
       @apply border-border mx-auto border;
     }
 
+    figure.image-caption {
+      @apply mx-auto w-fit max-w-full;
+    }
+
+    figure.image-caption img {
+      @apply my-0;
+    }
+
+    figure.image-caption figcaption {
+      @apply mt-2 text-center;
+    }
+
     img[role="button"] {
       @apply cursor-zoom-in;
 
@@ -95,7 +107,7 @@
     }
   }
 
-  .prose .katex-display {
+  .app-prose .katex-display {
     @apply text-foreground;
   }
 

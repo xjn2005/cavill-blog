@@ -1,6 +1,6 @@
 ---
 title: "从计算图理解反向传播"
-description: ""
+description: "An intuitive introduction to backpropagation through computational graphs, explaining how chain rule and dynamic programming make efficient gradient computation possible."
 pubDatetime: 2026-07-16T03:20:00.420Z
 tags:
   - Deep Learning
@@ -43,9 +43,9 @@ $\frac{\partial e}{\partial b} =w_1 \times w_3 +w_4 \times w_5$ 。同理易得$
 
 ![](https://cdn.jsdelivr.net/gh/xjn2005/my-blog-images/img/20260722114533260.png)
 
-如果要算$a、b、c$到$L$，那么我们会得到$w_1w_2+w_1w_3+w_1w_4$。这里我们需要做$3$次乘法和$2$次加法。
+如果要算 $a$、$b$、$c$ 到 $L$，那么我们会得到 $w_1w_2+w_1w_3+w_1w_4$。这里我们需要做 $3$ 次乘法和 $2$ 次加法。
 
-但是如果从$L$到$a、b、c$，我们会得到$w_1(w_2+w_3+w_4)$。这里我们只需要做$2$次加法和$1$次乘法。而反向传播的思想与因式分解类似。它通过复用已经计算出的中间梯度，将链式法则中的重复计算提取出来。
+但是如果从 $L$ 到 $a$、$b$、$c$，我们会得到 $w_1(w_2+w_3+w_4)$。这里我们只需要做 $2$ 次加法和 $1$ 次乘法。而反向传播的思想与因式分解类似。它通过复用已经计算出的中间梯度，将链式法则中的重复计算提取出来。
 
 当然，对于这个例子而言，优化确实不大。但是如果假设$w_1$被数亿个参数共享呢？这样我们可以节约无数的时间，因为自上而下或者说反向计算可以让我们只做一次乘法，并且我们省去了无数不必要的重复计算。本质上来说，这是「动态规划」。
 
