@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
-test("configures the GitHub Pages site URL and base path", async () => {
+test("configures the GitHub Pages custom domain", async () => {
   const [siteConfig, astroConfig] = await Promise.all([
     readFile("astro-paper.config.ts", "utf8"),
     readFile("astro.config.ts", "utf8"),
@@ -10,9 +10,9 @@ test("configures the GitHub Pages site URL and base path", async () => {
 
   assert.match(
     siteConfig,
-    /url: "https:\/\/xjn2005\.github\.io\/cavill-blog\/"/,
+    /url: "https:\/\/blog\.cavill\.site\/"/,
   );
-  assert.match(astroConfig, /base: "\/cavill-blog"/);
+  assert.doesNotMatch(astroConfig, /base: "\/cavill-blog"/);
 });
 
 test("deploys the built site to GitHub Pages", async () => {

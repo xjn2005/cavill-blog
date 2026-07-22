@@ -24,7 +24,6 @@ import config from "./astro-paper.config";
 
 export default defineConfig({
   site: config.site.url,
-  base: "/cavill-blog",
   integrations: [
     mdx(),
     sitemap({

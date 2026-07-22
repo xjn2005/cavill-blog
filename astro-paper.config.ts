@@ -2,7 +2,7 @@ import { defineAstroPaperConfig } from "./src/types/config";
 
 export default defineAstroPaperConfig({
   site: {
-    url: "https://xjn2005.github.io/cavill-blog/",
+    url: "https://blog.cavill.site/",
     title: "Cavill's Blog",
     description: "A minimal, responsive and SEO-friendly Astro blog theme.",
     author: "Sat Naing",
