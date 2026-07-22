@@ -3,7 +3,7 @@ import { defineAstroPaperConfig } from "./src/types/config";
 export default defineAstroPaperConfig({
   site: {
     url: "https://astro-paper.pages.dev/",
-    title: "AstroPaper",
+    title: "Cavill's Blog",
     description: "A minimal, responsive and SEO-friendly Astro blog theme.",
     author: "Sat Naing",
     profile: "https://satna.ing",
@@ -29,10 +29,13 @@ export default defineAstroPaperConfig({
     search: "pagefind",
   },
   socials: [
-    { name: "github",   url: "https://github.com/satnaing/astro-paper" },
-    { name: "x",        url: "https://x.com/username" },
-    { name: "linkedin", url: "https://www.linkedin.com/in/username/" },
-    { name: "mail",     url: "mailto:yourmail@gmail.com" },
+    { name: "github", url: "https://github.com/xjn2005" },
+    { name: "reddit", url: "https://www.reddit.com/user/SmokeNo4763/" },
+    {
+      name: "linkedin",
+      url: "https://www.linkedin.com/in/jianing-xu-96226b412/",
+    },
+    { name: "mail", url: "mailto:2024210214023@stu.hznu.edu.cn" },
   ],
   shareLinks: [
     { name: "whatsapp", url: "https://wa.me/?text=" },

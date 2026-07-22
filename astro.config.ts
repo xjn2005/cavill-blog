@@ -7,10 +7,13 @@ import {
 import tailwindcss from "@tailwindcss/vite";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
-import { unified } from "@astrojs/markdown-remark";
 import remarkToc from "remark-toc";
 import remarkCollapse from "remark-collapse";
+import remarkBreaks from "remark-breaks";
+import remarkMath from "remark-math";
+import mdFormat from "@cavillxu/astro-md-format";
 import rehypeCallouts from "rehype-callouts";
+import rehypeKatex from "rehype-katex";
 import {
   transformerNotationDiff,
   transformerNotationHighlight,
@@ -27,6 +30,7 @@ export default defineConfig({
       filter: page =>
         config.features?.showArchives !== false || !page.endsWith("/archives/"),
     }),
+    mdFormat(),
   ],
   i18n: {
     locales: ["en"],
@@ -36,13 +40,13 @@ export default defineConfig({
     },
   },
   markdown: {
-    processor: unified({
-      remarkPlugins: [
-        remarkToc,
-        [remarkCollapse, { test: "Table of contents" }],
-      ],
-      rehypePlugins: [rehypeCallouts],
-    }),
+    remarkPlugins: [
+      remarkBreaks,
+      remarkMath,
+      remarkToc,
+      [remarkCollapse, { test: "Table of contents" }],
+    ],
+    rehypePlugins: [rehypeCallouts, rehypeKatex],
     shikiConfig: {
       themes: { light: "min-light", dark: "night-owl" },
       defaultColor: false,
