@@ -5,6 +5,7 @@ import {
   svgoOptimizer,
 } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
+import react from "@astrojs/react";
 import mdx from "@astrojs/mdx";
 import { unified, type RemarkPlugin } from "@astrojs/markdown-remark";
 import sitemap from "@astrojs/sitemap";
@@ -27,6 +28,7 @@ import config from "./astro-paper.config";
 export default defineConfig({
   site: config.site.url,
   integrations: [
+    react(),
     mdx(),
     sitemap({
       filter: page =>

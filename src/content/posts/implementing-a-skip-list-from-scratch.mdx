@@ -1,0 +1,257 @@
+---
+title: "Implementing a Skip List from Scratch"
+description: "A step-by-step guide to implementing a Skip List in modern C++, covering its layered structure, randomized levels, and the search, insertion, and deletion operations."
+pubDatetime: 2026-07-23T01:50:54.468Z
+tags:
+  - C++
+  - skiplist
+draft: false
+---
+import SkipListSearchVisualizer from "@/components/SkipListSearchVisualizer";
+
+## Table of contents
+
+## Intro
+
+我第一次知道Skip List这种数据结构在学习CMU 15-445这门课程之后，在Project0里要求实现一个Skip List。完成之后才知道原来数据结构不只有那些在课堂里面讲的那些(e.g. linked list、stacks、queues、binary trees)，不过也可能是因为我一切靠自学，也许本科主修CS的知道？Anyway,我想这个数据结构对coding水平的提升还有modern C++的理解都有相当的好处，所以我会在这篇 Blog 里面讲解如何从零开始实现一个Skip List。Maybe 这会对你学习CMU-15445有帮助？我希望如此。不过现在这门课程在26年改成实现Count-min sketch 了。
+By the way，我非常推荐这门优质的Database System课程，[Professor Andy Pavlo](https://www.cs.cmu.edu/~pavlo/)很有个性，虽然没什么机会去现场上他的课程，但是在youtube或bilibili上面都有课程的视频。我想你看到这个视频的开头就会忍不住继续观看的：
+<iframe width="1183" height="665" src="https://www.youtube.com/embed/otE2WvX3XdQ?list=PLSE8ODhjZXjYDBpQnSymaectKjxCy6BYq" title="#00 - Course Overview &amp; Logistics (CMU Intro to Database Systems)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+同时，我也非常推荐去[课程主页](https://15445.courses.cs.cmu.edu/spring2025/project0/)看看他们提供的资料和思路，我觉得是非常优质的内容。不同的是，我们会选择从零开始实现，而课程只是让你补足一部分模块。
+
+## what is Skip List?
+简而言之，这是一种类似 Linked List的数据结构，它常常与Red-Black Tree或B+ Tree来作比较。因为这几个数据结构在解决某些问题上可以提供相同的作用。你可以看[Why are skip lists not preferred over B+-trees for databases?](https://stackoverflow.com/questions/21828834/why-are-skip-lists-not-preferred-over-b-trees-for-databases)和[Skip List Data Structure: A Faster Alternative to Trees](https://singhajit.com/data-structures/skip-list/)这两篇Blog来了解相关信息。而我们选择实现Skip List的原因就在于：
+1. 这不属于最为常见的数据结构。
+2. 它的实现相对而言更简洁优雅。
+3. 并不那么容易实现
+
+基于上述特征，我觉得它非常适合作为学习的内容。所以，让我们开始设计这种数据结构吧！
+
+## To DESCRIBE the structure of Skip List
+
+国内很多大学在学习数据结构的时候，常常上来就是讲解代码。我觉得这个问题是挺严重的，因为数据结构首先是一种结构，认识一种结构的关键还是要先勾勒出它具体的样子。否则通过高度抽象的代码很难在大脑里面描摹具体的structure。
+
+![Skip List structure](https://cdn.jsdelivr.net/gh/xjn2005/my-blog-images/img/20260723124608778.png "Figure 1,link:https://15445.courses.cs.cmu.edu/spring2025/project0/")
+
+我们可以定义出Node的结构：
+```cpp
+struct Node {
+    Node(std::size_t level, const Key& key, const Value& value)
+        : key(key), value(value), forward(level, nullptr) {}
+
+    Key key;                    // 当前节点保存的 key
+    Value value;                // 对应的数据
+
+    std::vector<Node*> forward; // 不同层的后继指针
+};
+```
+Node 是 Skip List的基本组成单元。我们可以看Key 为 6的这个Node，它的forward数组里存放了4个元素：
+- `forward[0] -> Level0 的下一个节点`
+- `forward[1] -> Level1 的下一个节点`
+- `forward[2] -> Level2 的下一个节点`
+- `forward[3] = nullptr`[^1]
+ 
+节点拥有的forward元素数量决定了这个节点的最高层数。
+于此同时，我们可以发现出现了一个新的变量Level。从而我们知道，仅仅定义Node并不足以实现这个数据结构应该要有的功能，我们还需要维护一些全局的状态变量。
+
+```cpp
+std::size_t maxLevel_;
+double probability_;
+Node* head_;
+std::size_t level_;
+std::size_t size_ = 0;
+Compare comp_;
+mutable std::mt19937 rng_;
+mutable std::uniform_real_distribution<double> distribution_;
+```
+![](https://cdn.jsdelivr.net/gh/xjn2005/my-blog-images/img/20260723132858264.png "Figure 2")
+
+这张图并没有完整展示Node，因为一个节点既有Key也有Value。但是因为我们查询遍历的时候主要依据是Key，所以我们没有画出Value。
+
+
+## Operations on Skip List
+
+在有了直观的认知之后，我们会实现一个数据结构最基本的几个操作。
+
+### Search
+我们基于Figure 2展示的这个Skip List形态开始。那么我在实现数据结构操作的时候，一般会先区分实现成功或者失败的状态。
+在这里，我们认为成功就是找到了我们需要Key值的节点，返回这个节点的地址，也就是一个指针。如果没有找到，则返回`nullptr`。
+根据我们的设想，我们可以写出这个函数的框架：
+```cpp
+[[nodiscard]] Node* findNode(const Key& key) const {
+        {
+            kind of search operation...
+        }
+        return nullptr;
+    }
+```
+然后我们会往里面补充具体操作，我们之前提到过Skip List是一种类似Linked List的数据结构，而在Linked List里面如需便利，我们会引入一个current指针，在这里也是一样。
+Again,我们是基于Figure 2的状态进行讲解。所以此时：
+- `head_`指向第一个节点，我们通常称为Sentinel Node。
+- `level_ = 5;`
+
+我们会让current指针指向这个Sentinel Node，即`Node* current = head_;`。
+假定我们传入的Key为9,那么我们需要经历如下过程：
+我们会让`current`自上而下，依次指向forward数组保存的元素。通过判断这个这个元素是否为`nullptr`以及元素的Key值是否小于要寻找的值来判断current是否需要移动，最终我们会得到一个小于目标 Key 的最大节点。此时，我们并没有直接找到目标节点，而是定位到了它应该出现的位置。因此，只需要访问 `current->forward[0]`，检查下一个节点的 Key 是否与目标 Key 相等即可。
+```cpp
+[[nodiscard]] Node* findNode(const Key& key) const {
+    Node* current = head_;
+    for (std::size_t i = level_; i > 0; --i) {
+        while (current->forward[i - 1] != nullptr &&
+                comp_(current->forward[i - 1]->key, key)) {
+            current = current->forward[i - 1];
+        }
+    }
+
+    current = current->forward[0];
+    // 我们会在之前实现这个isEqual函数。
+    if (current != nullptr && isEqual(current->key, key)) {
+      return current;
+    }
+    return nullptr;
+}
+```
+这样，我们就成功实现了Search功能。
+
+<SkipListSearchVisualizer client:load />
+
+### Insert
+
+上一节中，我们已经了解了如何在 Skip List 中查找一个节点。接下来，我们将实现插入操作。
+与普通链表不同，Skip List 的插入不仅需要修改底层链表，还需要维护更高层的索引结构。因此，插入操作主要包含两个步骤：
+
+1. 找到新节点在每一层中的插入位置；
+2. 随机决定新节点的高度，并更新对应层的 forward 指针。
+
+在第一步中，我们可以复用 Search 的思想，通过从最高层开始向下搜索，找到每一层中位于新节点之前的节点。不同的是，这一次我们不仅需要找到位置，还需要保存这些前驱节点，因为后续插入时需要修改它们的指针。
+在实现第二步之前，我们需要先实现一个随机层数生成函数。Skip List 的核心思想之一就是通过随机化决定节点的高度，从而使整个数据结构在概率意义上保持平衡。
+在 C++ 中，我们可以使用标准库提供的 `std::mt19937` 和 `std::uniform_real_distribution` ，不需要自己造轮子。
+
+#### 第一步
+由于已经知道如何实现Search,我们就可以选择复用写过的代码。
+```cpp
+bool insert(const Key& key, const Value& value) {
+        std::vector<Node*> update(maxLevel_, nullptr);
+        Node* current = head_;
+
+        for (std::size_t i = level_; i > 0; --i) {
+            while (current->forward[i - 1] != nullptr &&
+                   comp_(current->forward[i - 1]->key, key)) {
+                current = current->forward[i - 1];
+            }
+            update[i - 1] = current;
+        }
+
+        current = current->forward[0];
+        if (current != nullptr && isEqual(current->key, key)) {
+            current->value = value;
+            return false;
+        }
+```
+这部分代码与 Search 的过程非常相似。不同之处在于，我们额外维护了一个 `update` 数组，用于记录每一层中位于目标位置之前的节点。
+这是因为插入操作不仅需要找到新节点的位置，还需要知道后续应该修改哪些节点的 `forward` 指针。
+> [!TIP]
+> `current = current->forward[0];`这一行代码，在这里的作用不同于Search,它将 `current` 指针移动到下一层的节点。也就是将`urrent`指向大于目标Key值的最小节点。
+
+
+不过，到这里我们实际上还没有真正执行插入操作。搜索完成后，我们首先需要检查目标 Key 是否已经存在。
+如果后继节点的 Key 与待插入的 Key 相等，由于本实现不允许重复 Key 出现，我们会直接更新后继节点的value，并返回 false，表示插入操作未成功，因为该 Key 已经存在。
+#### 第二步
+如果目标 Key 不存在，那么我们就可以正式创建新的节点。
+首先，需要决定新节点的高度。由于 Skip List 使用随机化决定节点层数，新节点可能拥有比当前 Skip List 更高的层级。
+
+```cpp
+const std::size_t newLevel = randomLevel();
+        if (newLevel > level_) {
+            for (std::size_t i = level_; i < newLevel; ++i) {
+                update[i] = head_;
+            }
+            level_ = newLevel;
+        }
+
+        Node* newNode = new Node(newLevel, key, value);
+        for (std::size_t i = 0; i < newLevel; ++i) {
+            newNode->forward[i] = update[i]->forward[i];
+            update[i]->forward[i] = newNode;
+        }
+
+        ++size_;
+        return true;
+    }
+```
+我们仍通过Figure 2来理解这个过程。假设我们要插入的节点的Key为10，並且随机生成的层数为3。我们会在update数组里面存入这样一组数据：
+![](https://cdn.jsdelivr.net/gh/xjn2005/my-blog-images/img/20260723171202864.svg)
+又因为我们的层数并没有超过原来的层数（level = 5），所以我们直接进入：
+```cpp
+    Node* newNode = new Node(newLevel, key, value);
+    for (std::size_t i = 0; i < newLevel; ++i) {
+        newNode->forward[i] = update[i]->forward[i];
+        update[i]->forward[i] = newNode;
+    }      
+    ++size_;
+    return true;
+```
+这段代码非常类似于链表的插入操作。我们首先将新节点的 `forward` 指针指向大于目标Key值的最小节点。然后将前驱节点的 `forward` 指针更新为指向新节点。这样，新节点就被成功插入到 Skip List 中。
+
+因为这种操作是类似的，因此我只展示当i=0时的情况：
+
+![](https://cdn.jsdelivr.net/gh/xjn2005/my-blog-images/img/20260723172734028.svg "实际上是Key=9的节点的forward[0]指向Key=10的节点")
+
+之后的循环情况都可以以此类推。最后增加节点个数，并返回`Ture`，整个插入过程就结束了。
+
+### Erase
+Erase操作与Insert操作恰好相反，找到前驱节点后，我们需要`forward`直接跳过目标节点，并指向目标节点的后继节点。这样就完成了删除操作。
+
+```cpp
+bool erase(const Key& key) {
+        std::vector<Node*> update(maxLevel_, nullptr);
+        Node* current = head_;
+
+        for (std::size_t i = level_; i > 0; --i) {
+            while (current->forward[i - 1] != nullptr &&
+                   comp_(current->forward[i - 1]->key, key)) {
+                current = current->forward[i - 1];
+            }
+            update[i - 1] = current;
+        }
+
+        current = current->forward[0];
+        if (current == nullptr || !isEqual(current->key, key)) {
+            return false;
+        }
+
+        for (std::size_t i = 0; i < level_; ++i) {
+            if (update[i]->forward[i] != current) {
+                break;
+            }
+            update[i]->forward[i] = current->forward[i];
+        }
+
+        delete current;
+        --size_;
+
+        while (level_ > 1 && head_->forward[level_ - 1] == nullptr) {
+            --level_;
+        }
+
+        return true;
+    }
+```
+我想看懂了`insert`，`erase`的实现应该是非常容易理解的。我们同样会维护一个update数组，记录每一层中位于目标节点之前的节点。然后，我们检查目标节点是否存在，如果存在，就将前驱节点的 `forward` 指针直接跳过目标节点，指向目标节点的后继节点。最后，我们删除目标节点，并更新 Skip List 的层数和大小。因此在这里不再赘述。
+
+### Initialization
+在实现了基本的操作之后，我们还需要对整个 Skip List 进行初始化。初始化主要包括设置最大层数、概率因子、创建头节点以及初始化随机数生成器。好在，我们已经把最困难的部分解决了。而剩下的这些内容显然不是我们的重点，所以我把实现的内容放在了这个[repository](https://github.com/xjn2005/Data-Structure/blob/main/include/ds/linear_list/skip_list.hpp)里面，你可以直接去看源码。
+
+Hope this Helps!
+
+
+
+
+
+
+
+
+
+
+
+[^1]:图中的NIL，我猜想是为了致敬提出Skip List的原始论文：[Skip Lists: A Probabilistic Alternative to Balanced Trees](https://15721.courses.cs.cmu.edu/spring2018/papers/08-oltpindexes1/pugh-skiplists-cacm1990.pdf)

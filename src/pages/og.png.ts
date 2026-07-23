@@ -138,7 +138,7 @@ export const GET: APIRoute = async context => {
           },
         ],
       },
-    },
+    } as unknown as Parameters<typeof satori>[0],
     {
       width: 1200,
       height: 630,

@@ -1,6 +1,6 @@
 ---
 title: "Monty Hall problem"
-description: ""
+description: "A deep dive into the Monty Hall Problem. This article explains the famous probability puzzle using both intuitive case analysis and Bayes' theorem, showing why switching doors gives a 2/3 chance of winning and why human intuition often fails in probabilistic reasoning."
 pubDatetime: 2026-07-22T07:00:21.584Z
 tags:
   - Probability

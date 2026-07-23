@@ -47,6 +47,10 @@
       @apply border-border mx-auto border;
     }
 
+    iframe {
+      @apply block aspect-video h-auto w-full;
+    }
+
     figure.image-caption {
       @apply mx-auto w-fit max-w-full;
     }
