@@ -151,7 +151,7 @@ bool insert(const Key& key, const Value& value) {
 这部分代码与 Search 的过程非常相似。不同之处在于，我们额外维护了一个 `update` 数组，用于记录每一层中位于目标位置之前的节点。
 这是因为插入操作不仅需要找到新节点的位置，还需要知道后续应该修改哪些节点的 `forward` 指针。
 > [!TIP]
-> `current = current->forward[0];`这一行代码，在这里的作用不同于Search,它将 `current` 指针移动到下一层的节点。也就是将`urrent`指向大于目标Key值的最小节点。
+> `current = current->forward[0];`这一行代码，在这里的作用不同于Search,它将 `current` 指针移动到下一层的节点。也就是将`current`指向大于目标Key值的最小节点。
 
 
 不过，到这里我们实际上还没有真正执行插入操作。搜索完成后，我们首先需要检查目标 Key 是否已经存在。
@@ -239,7 +239,7 @@ bool erase(const Key& key) {
 ```
 我想看懂了`insert`，`erase`的实现应该是非常容易理解的。我们同样会维护一个update数组，记录每一层中位于目标节点之前的节点。然后，我们检查目标节点是否存在，如果存在，就将前驱节点的 `forward` 指针直接跳过目标节点，指向目标节点的后继节点。最后，我们删除目标节点，并更新 Skip List 的层数和大小。因此在这里不再赘述。
 
-### Initialization
+## Initialization
 在实现了基本的操作之后，我们还需要对整个 Skip List 进行初始化。初始化主要包括设置最大层数、概率因子、创建头节点以及初始化随机数生成器。好在，我们已经把最困难的部分解决了。而剩下的这些内容显然不是我们的重点，所以我把实现的内容放在了这个[repository](https://github.com/xjn2005/Data-Structure/blob/main/include/ds/linear_list/skip_list.hpp)里面，你可以直接去看源码。
 
 Hope this Helps!
