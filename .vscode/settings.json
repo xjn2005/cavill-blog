@@ -6,6 +6,5 @@
   "[mdx]": {
     "editor.wordWrap": "bounded",
     "editor.wordWrapColumn": 120,
-    "mdx.server.enable": false
   }
 }
