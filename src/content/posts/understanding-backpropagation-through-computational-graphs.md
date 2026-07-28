@@ -30,16 +30,14 @@ draft: false
 
 > [!INFO] 复合偏导数求导法则
 > 如果 $z = f(u,v)$, 其中 $u = \varphi(x, y)$, $v = \psi(x, y)$, 则：
->  - 对 $x$ 的偏导数：$\frac{\partial z}{\partial x} = \frac{\partial f}{\partial u} \frac{\partial u}{\partial x} +  \frac{\partial f}{\partial v} \frac{\partial v}{\partial x}$
->  - 对 $y$ 的偏导数：$\frac{\partial z}{\partial y} = \frac{\partial f}{\partial u} \frac{\partial u}{\partial y} +  \frac{\partial f}{\partial v} \frac{\partial v}{\partial y}$
 >
-
+> - 对 $x$ 的偏导数：$\frac{\partial z}{\partial x} = \frac{\partial f}{\partial u} \frac{\partial u}{\partial x} +  \frac{\partial f}{\partial v} \frac{\partial v}{\partial x}$
+> - 对 $y$ 的偏导数：$\frac{\partial z}{\partial y} = \frac{\partial f}{\partial u} \frac{\partial u}{\partial y} +  \frac{\partial f}{\partial v} \frac{\partial v}{\partial y}$
 
 因此我们可以这样求出$\frac{\partial e}{\partial b}$。
 $\frac{\partial e}{\partial b} =w_1 \times w_3 +w_4 \times w_5$ 。同理易得$\frac{\partial e}{\partial a} =w_1 \times w_2$。
 
 但显然这几乎是最简单的一种形式，对于复杂的神经网络而言，往往会出现非常大量的参数和非常多的层数，面对这么大规模的交互，产生的路径组合也是非常大规模的。
-
 
 ![](https://cdn.jsdelivr.net/gh/xjn2005/my-blog-images/img/20260722114533260.png)
 

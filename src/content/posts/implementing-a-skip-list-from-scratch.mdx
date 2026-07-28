@@ -197,7 +197,7 @@ const std::size_t newLevel = randomLevel();
 
 ![](https://cdn.jsdelivr.net/gh/xjn2005/my-blog-images/img/20260723172734028.svg "实际上是Key=9的节点的forward[0]指向Key=10的节点")
 
-之后的循环情况都可以以此类推。最后增加节点个数，并返回`Ture`，整个插入过程就结束了。
+之后的循环情况都可以以此类推。最后增加节点个数，并返回`True`，整个插入过程就结束了。
 
 ### Erase
 Erase操作与Insert操作恰好相反，找到前驱节点后，我们需要`forward`直接跳过目标节点，并指向目标节点的后继节点。这样就完成了删除操作。

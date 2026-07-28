@@ -12,9 +12,10 @@ function visit(node) {
 
     if (child?.type === "element" && child.tagName === "p") {
       const img = standaloneImage(child.children);
-      const title = typeof img?.properties?.title === "string"
-        ? img.properties.title.trim()
-        : "";
+      const title =
+        typeof img?.properties?.title === "string"
+          ? img.properties.title.trim()
+          : "";
 
       if (title) {
         const properties = { ...img.properties };
@@ -44,7 +45,7 @@ function visit(node) {
 
 function standaloneImage(children = []) {
   const meaningful = children.filter(
-    child => child.type !== "text" || /\S/.test(child.value ?? ""),
+    child => child.type !== "text" || /\S/.test(child.value ?? "")
   );
 
   return meaningful.length === 1 &&
@@ -53,4 +54,3 @@ function standaloneImage(children = []) {
     ? meaningful[0]
     : undefined;
 }
-

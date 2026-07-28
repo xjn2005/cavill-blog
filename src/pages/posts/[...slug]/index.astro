@@ -177,12 +177,61 @@ const ogImage = ogImageUrl
         data-lang="zh-CN"
         data-loading="lazy"
         crossorigin="anonymous"
-        async
-      ></script>
+        async></script>
     </section>
   </main>
   <Footer />
 </PostLayout>
+
+<script>
+  async function drawMermaid(diagrams: HTMLElement[]) {
+    if (!diagrams.length) return;
+
+    const { default: mermaid } = await import("mermaid");
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: document.documentElement.classList.contains("dark")
+        ? "dark"
+        : "default",
+    });
+    await mermaid.run({ nodes: diagrams });
+  }
+
+  async function renderMermaid() {
+    const diagrams = Array.from(
+      document.querySelectorAll(
+        "pre > code.language-mermaid, pre[data-language='mermaid'] > code"
+      )
+    ).map(code => {
+      const diagram = document.createElement("pre");
+      diagram.className = "mermaid";
+      diagram.dataset.mermaidSource = code.textContent ?? "";
+      diagram.textContent = diagram.dataset.mermaidSource;
+      code.parentElement?.replaceWith(diagram);
+      return diagram;
+    });
+
+    await drawMermaid(diagrams);
+  }
+
+  function rerenderMermaid() {
+    const diagrams = Array.from(
+      document.querySelectorAll<HTMLElement>(".mermaid[data-mermaid-source]")
+    );
+    for (const diagram of diagrams) {
+      diagram.removeAttribute("data-processed");
+      diagram.textContent = diagram.dataset.mermaidSource ?? "";
+    }
+    return drawMermaid(diagrams);
+  }
+
+  void renderMermaid();
+  document.addEventListener("astro:page-load", () => void renderMermaid());
+  new MutationObserver(() => void rerenderMermaid()).observe(
+    document.documentElement,
+    { attributes: true, attributeFilter: ["class"] }
+  );
+</script>
 
 <script is:inline data-astro-rerun>
   function createProgressBar() {
@@ -200,6 +249,9 @@ const ogImage = ogImageUrl
   createProgressBar();
 
   function updateScrollProgress() {
+    if (window.__postProgressBound) return;
+    window.__postProgressBound = true;
+
     document.addEventListener("scroll", () => {
       const winScroll =
         document.body.scrollTop || document.documentElement.scrollTop;
@@ -548,7 +600,10 @@ const ogImage = ogImageUrl
     );
   }
 
-  document.addEventListener("astro:after-swap", () =>
-    window.scrollTo({ left: 0, top: 0, behavior: "instant" })
-  );
+  if (!window.__postScrollRestoreBound) {
+    window.__postScrollRestoreBound = true;
+    document.addEventListener("astro:after-swap", () =>
+      window.scrollTo({ left: 0, top: 0, behavior: "instant" })
+    );
+  }
 </script>

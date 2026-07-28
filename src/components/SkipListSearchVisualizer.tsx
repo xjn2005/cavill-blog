@@ -299,30 +299,37 @@ export default function SkipListSearchVisualizer() {
       <pre className="border-border mt-4 w-full overflow-x-auto rounded border p-3 font-mono text-sm leading-6">
         <code className="language-cpp block min-w-max">
           <span className={codeLineClass(step.line === "decrement")}>
-            <span className={syntax.keyword}>for</span> (std::size_t i =
-            level_; i &gt; <span className={syntax.literal}>0</span>; --i) {'{'}
+            <span className={syntax.keyword}>for</span> (std::size_t i = level_;
+            i &gt; <span className={syntax.literal}>0</span>; --i) {"{"}
           </span>
-          <span className={codeLineClass(step.line === "while", "ps-4")}><span className={syntax.keyword}>while</span> (current-&gt;<span className={syntax.member}>forward</span>[i - 1] != <span className={syntax.literal}>nullptr</span> && <span className={syntax.function}>comp_</span>(current-&gt;<span className={syntax.member}>forward</span>[i - 1]-&gt;<span className={syntax.member}>key</span>, key)) {'{'}</span>
+          <span className={codeLineClass(step.line === "while", "ps-4")}>
+            <span className={syntax.keyword}>while</span> (current-&gt;
+            <span className={syntax.member}>forward</span>[i - 1] !={" "}
+            <span className={syntax.literal}>nullptr</span> &&{" "}
+            <span className={syntax.function}>comp_</span>(current-&gt;
+            <span className={syntax.member}>forward</span>[i - 1]-&gt;
+            <span className={syntax.member}>key</span>, key)) {"{"}
+          </span>
           <span className={codeLineClass(step.line === "advance", "ps-8")}>
-            current = current-&gt;<span className={syntax.member}>forward</span>[i -
-            <span className={syntax.literal}>1</span>];
+            current = current-&gt;<span className={syntax.member}>forward</span>
+            [i -<span className={syntax.literal}>1</span>];
           </span>
-          <span className="block ps-6">{'}'}</span>
-          <span className="block ps-4">{'}'}</span>
+          <span className="block ps-6">{"}"}</span>
+          <span className="block ps-4">{"}"}</span>
           <span className={codeLineClass(step.line === "next")}>
-            current = current-&gt;<span className={syntax.member}>forward</span>[
-            <span className={syntax.literal}>0</span>];
+            current = current-&gt;<span className={syntax.member}>forward</span>
+            [<span className={syntax.literal}>0</span>];
           </span>
           <span className={codeLineClass(step.line === "equal")}>
             <span className={syntax.keyword}>if</span> (current !=
             <span className={syntax.literal}>nullptr</span> &&
             <span className={syntax.function}>isEqual</span>(current-&gt;
-            <span className={syntax.member}>key</span>, key)) {'{'}
+            <span className={syntax.member}>key</span>, key)) {"{"}
           </span>
           <span className={codeLineClass(step.line === "return", "ps-4")}>
             <span className={syntax.keyword}>return</span> current;
           </span>
-          <span className="block">{'}'}</span>
+          <span className="block">{"}"}</span>
         </code>
       </pre>
       <p className="mt-2 text-sm">{step.message}</p>

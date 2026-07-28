@@ -18,5 +18,6 @@ export default [
     },
   },
   { rules: { "no-console": "error" } },
+  { files: ["scripts/new-post.mjs"], rules: { "no-console": "off" } },
   { ignores: ["dist/**", ".astro/**", "public/pagefind/**"] },
 ];

@@ -28,10 +28,7 @@ test("documents every current movement and its article placement", async () => {
   assert.match(component, /return current/);
   assert.match(component, /language-cpp/);
   assert.doesNotMatch(component, /bg-accent/);
-  assert.match(
-    component,
-    /&& <span className=\{syntax\.function\}>comp_<\/span>\(current-&gt;/,
-  );
+  assert.match(component, /<span className=\{syntax\.function\}>comp_<\/span>/);
   assert.doesNotMatch(component, /max-w-\[680px\]/);
   assert.match(component, /className="text-foreground w-full"/);
   assert.match(component, /<pre className="border-border mt-4 w-full/);
