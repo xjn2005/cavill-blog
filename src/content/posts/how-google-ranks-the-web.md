@@ -181,8 +181,8 @@ where:
 - $v$ is the probability distribution of random jumps
 - $\alpha$ is called the damping factor, usually set to 0.85 in practice
 
-The beauty of PageRank is that it does not require us to define importance explicitly.
+This modification ensures that the random surfer can always reach any webpage, allowing the process to converge to a unique stable distribution.
 
-Instead, it lets importance emerge from the structure of the Web itself.
+The final PageRank is therefore not manually assigned by humans. Instead, it emerges naturally from the structure of the Web itself.
 
 A webpage is important not because it says it is important, but because important webpages point to it.
