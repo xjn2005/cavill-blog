@@ -103,89 +103,90 @@ $$
 
 因此，$D_{ijkl}$ 的完整含义是“输出 $F_{ij}$ 对输入 $X_{kl}$ 的敏感程度”。
 
-> [!EXAMPLE] 对矩阵求导的含义
-> 令
->
-> $$
-> X =
-> \begin{pmatrix}
-> X_{1,1} & X_{1,2} \\
-> X_{2,1} & X_{2,2}
-> \end{pmatrix}.
-> $$
->
-> 取一个具体的矩阵函数：
->
-> $$
-> A =
-> \begin{pmatrix}
-> 1 & 2 \\
-> 3 & 4
-> \end{pmatrix},
-> \qquad
-> F(X) = AX.
-> $$
->
-> 例如，代入
->
-> $$
-> X =
-> \begin{pmatrix}
-> 5 & 6 \\
-> 7 & 8
-> \end{pmatrix},
-> $$
->
-> 输出左上角元素为
->
-> $$
-> F_{1,1} = 1 \times 5 + 2 \times 7 = 19.
-> $$
->
-> 求导时不代入具体数值，而是保留变量。因此，$F_{1,1}$ 的表达式为
->
-> $$
-> F_{1,1} = X_{1,1} + 2X_{2,1}.
-> $$
->
-> 固定一个输出元素 $F_{i,j}$ 后，它是 $X$ 的四个元素组成的标量函数。因此，
->
-> $$
-> \frac{\partial F_{i,j}}{\partial X}
-> =
-> \begin{pmatrix}
-> \dfrac{\partial F_{i,j}}{\partial X_{1,1}} &
-> \dfrac{\partial F_{i,j}}{\partial X_{1,2}} \\
-> \dfrac{\partial F_{i,j}}{\partial X_{2,1}} &
-> \dfrac{\partial F_{i,j}}{\partial X_{2,2}}
-> \end{pmatrix}.
-> $$
->
-> 这里的 $\partial F_{i,j}/\partial X$ 不是普通的“相除”，而是把 $F_{i,j}$ 对 $X$ 中每个元素的偏导数按原来的位置排成一个矩阵。
->
-> 对这个具体的 $F_{1,1}$ 逐项求导：
->
-> $$
-> \begin{aligned}
-> \frac{\partial F_{1,1}}{\partial X_{1,1}} &= 1, &
-> \frac{\partial F_{1,1}}{\partial X_{1,2}} &= 0, \\
-> \frac{\partial F_{1,1}}{\partial X_{2,1}} &= 2, &
-> \frac{\partial F_{1,1}}{\partial X_{2,2}} &= 0.
-> \end{aligned}
-> $$
->
-> 所以
->
-> $$
-> \frac{\partial F_{1,1}}{\partial X}
-> =
-> \begin{pmatrix}
-> 1 & 0 \\
-> 2 & 0
-> \end{pmatrix}.
-> $$
->
-> 这正是四阶导数中的一个切片，也就是 $D_{1,1,:,:}$。
+#### 对矩阵求导的含义
+
+令
+
+$$
+X =
+\begin{pmatrix}
+X_{1,1} & X_{1,2} \\
+X_{2,1} & X_{2,2}
+\end{pmatrix}.
+$$
+
+取一个具体的矩阵函数：
+
+$$
+A =
+\begin{pmatrix}
+1 & 2 \\
+3 & 4
+\end{pmatrix},
+\qquad
+F(X) = AX.
+$$
+
+例如，代入
+
+$$
+X =
+\begin{pmatrix}
+5 & 6 \\
+7 & 8
+\end{pmatrix},
+$$
+
+输出左上角元素为
+
+$$
+F_{1,1} = 1 \times 5 + 2 \times 7 = 19.
+$$
+
+求导时不代入具体数值，而是保留变量。因此，$F_{1,1}$ 的表达式为
+
+$$
+F_{1,1} = X_{1,1} + 2X_{2,1}.
+$$
+
+固定一个输出元素 $F_{i,j}$ 后，它是 $X$ 的四个元素组成的标量函数。因此，
+
+$$
+\frac{\partial F_{i,j}}{\partial X}
+=
+\begin{pmatrix}
+\dfrac{\partial F_{i,j}}{\partial X_{1,1}} &
+\dfrac{\partial F_{i,j}}{\partial X_{1,2}} \\
+\dfrac{\partial F_{i,j}}{\partial X_{2,1}} &
+\dfrac{\partial F_{i,j}}{\partial X_{2,2}}
+\end{pmatrix}.
+$$
+
+这里的 $\partial F_{i,j}/\partial X$ 不是普通的“相除”，而是把 $F_{i,j}$ 对 $X$ 中每个元素的偏导数按原来的位置排成一个矩阵。
+
+对这个具体的 $F_{1,1}$ 逐项求导：
+
+$$
+\begin{aligned}
+\frac{\partial F_{1,1}}{\partial X_{1,1}} &= 1, &
+\frac{\partial F_{1,1}}{\partial X_{1,2}} &= 0, \\
+\frac{\partial F_{1,1}}{\partial X_{2,1}} &= 2, &
+\frac{\partial F_{1,1}}{\partial X_{2,2}} &= 0.
+\end{aligned}
+$$
+
+所以
+
+$$
+\frac{\partial F_{1,1}}{\partial X}
+=
+\begin{pmatrix}
+1 & 0 \\
+2 & 0
+\end{pmatrix}.
+$$
+
+这正是四阶导数中的一个切片，也就是 $D_{1,1,:,:}$。
 
 更一般地，若输入是 $k$ 阶张量、输出是 $l$ 阶张量，导数就有 $k+l$ 个轴。实际编程时，自动求导框架会直接计算所需的缩并[^1]结果，我们通常无需手动展开这些高维结构。
 
