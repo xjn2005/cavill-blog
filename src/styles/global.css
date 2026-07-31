@@ -3,6 +3,12 @@
 @import "./typography.css";
 @import "rehype-callouts/theme/obsidian";
 
+/* Keep table grids legible against the tinted callout background. */
+.callout table th,
+.callout table td {
+  border-color: color-mix(in srgb, var(--rc-color-light) 35%, var(--border));
+}
+
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 @layer base {
