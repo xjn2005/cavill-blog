@@ -12,12 +12,6 @@ tags:
 draft: false
 ---
 
-import QuidditchUniformSearch from "@/components/QuidditchUniformSearch";
-import GoldenSnitchTrajectory from "@/components/GoldenSnitchTrajectory";
-
-
-
-
 在 Harry Potter里面，Quidditch是一种受到了几乎全世界巫师喜爱的扫帚运动。而Golden Snitch则是这种扫帚运动最有趣的一种比赛用球。不仅因为它快如闪电，更因为抓住它的球队可以赢得额外的150分，这很有可能扭转胜负的局势。
 
 ![](https://cdn.jsdelivr.net/gh/xjn2005/my-blog-images/img/20260724134701817.webp "格兰芬多队追球手金妮·韦斯莱。")
@@ -43,8 +37,6 @@ import GoldenSnitchTrajectory from "@/components/GoldenSnitchTrajectory";
 
 我们可以把整个 Quidditch 球场看作一个三维空间，并为每一个位置赋予一个概率：$P(x,y,z)$，用于表示 Golden Snitch 出现在坐标 $(x,y,z)$ 的可能性。
 一开始，由于搜寻手没有任何信息。我们假设Golden Snitch 出现在任何位置的概率相同，即服从均匀分布。
-
-<QuidditchUniformSearch client:load />
 
 设：当Golden Snitch经过$(x_0,y_0,z_0)$时，会在该位置留下一道强度为 $I_0$ 的光芒。残光随着时间 $t$ 指数衰减：
 $$
@@ -114,8 +106,6 @@ $$
 $$
 
 其中 $\sigma$ 控制随机扰动的大小。
-
-<GoldenSnitchTrajectory client:load />
 
 ### Prediction Step
 
