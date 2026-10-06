@@ -10,6 +10,7 @@ export default defineAstroPaperConfig({
     profile: "https://github.com/xjn2005",
     ogImage: "default-og.jpg",
     lang: "en",
+    contentLanguage: "zh-CN",
     timezone: "Asia/Shanghai",
     dir: "ltr",
   },

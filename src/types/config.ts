@@ -13,6 +13,8 @@ interface SiteConfig {
   ogImage?: string;
   /** HTML lang attribute, defaults to "en" */
   lang?: string;
+  /** Primary language of the published content, independent of UI routing */
+  contentLanguage?: string;
   /** IANA timezone for post dates, e.g. "Asia/Bangkok" */
   timezone?: string;
   /** Text direction */
@@ -110,6 +112,7 @@ type ResolvedSiteConfig = Required<
     | "description"
     | "author"
     | "lang"
+    | "contentLanguage"
     | "timezone"
     | "dir"
     | "ogImage"
