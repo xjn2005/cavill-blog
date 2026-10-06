@@ -24,3 +24,20 @@ test("publishes linked WebSite, Person, and SearchAction entities", async () => 
   assert.match(layout, /"@type": "SearchAction"/);
   assert.match(layout, /sameAs/);
 });
+
+test("publishes complete article and breadcrumb JSON-LD from existing post data", async () => {
+  const [layout, postPage] = await Promise.all([
+    readFile("src/layouts/PostLayout.astro", "utf8"),
+    readFile("src/pages/posts/[...slug]/index.astro", "utf8"),
+  ]);
+
+  assert.match(layout, /"@type": "BlogPosting"/);
+  assert.match(layout, /"@type": "BreadcrumbList"/);
+  assert.match(layout, /mainEntityOfPage/);
+  assert.match(layout, /inLanguage: site\.contentLanguage/);
+  assert.match(layout, /wordCount/);
+  assert.match(layout, /articleSection/);
+  assert.match(postPage, /description=\{description\}/);
+  assert.match(postPage, /keywords=\{tags\}/);
+  assert.match(postPage, /\{wordCount\}/);
+});
