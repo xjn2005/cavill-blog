@@ -13,6 +13,8 @@
     "sync": "astro sync",
     "astro": "astro",
     "new:post": "node scripts/new-post.mjs",
+    "indexnow:prepare": "node scripts/indexnow.mjs prepare",
+    "indexnow:submit": "node scripts/indexnow.mjs submit",
     "format:check": "prettier --check .",
     "format": "prettier --write .",
     "lint": "eslint ."
