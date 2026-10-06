@@ -4,6 +4,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
 import {
+  getCommandArguments,
   getAddedPostFiles,
   getIndexNowUrls,
   getPostUrls,
@@ -11,6 +12,13 @@ import {
   submitIndexNow,
   writeIndexNowKeyFile,
 } from "./indexnow.mjs";
+
+test("ignores pnpm's argument separator", () => {
+  assert.deepEqual(getCommandArguments(["submit", "--", "indexnow-urls.json"]), [
+    "submit",
+    "indexnow-urls.json",
+  ]);
+});
 
 test("keeps only newly added Markdown posts", () => {
   const status = [

@@ -31,6 +31,10 @@ export function getAddedPostFiles(nameStatus) {
   });
 }
 
+export function getCommandArguments(args) {
+  return args.filter(argument => argument !== "--");
+}
+
 export function getPostUrls(files, siteUrl = defaultSiteUrl) {
   return files.map(file => {
     const relativePath = file
@@ -139,7 +143,9 @@ async function submit(manifest) {
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  const [command, manifest = "indexnow-urls.json"] = process.argv.slice(2);
+  const [command, manifest = "indexnow-urls.json"] = getCommandArguments(
+    process.argv.slice(2)
+  );
 
   if (command === "prepare") {
     await prepare();
