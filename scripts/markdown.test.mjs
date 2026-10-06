@@ -45,6 +45,48 @@ test("keeps Chinese punctuation out of inline math", async () => {
   }
 });
 
+test("keeps the upper and lower bounds explainer inside its callout", async () => {
+  const post = await readFile(
+    "src/content/posts/如何理解实变函数的上下极限.md",
+    "utf8",
+  );
+  assert.match(
+    post,
+    /> \[!info\] 什么是上、下确界\n(?:>.*\n)*> > \[!example\][^\n]*/,
+    "expected the example callout to remain inside the bounds explainer",
+  );
+
+  const example = post.match(
+    /> > \[!example\][^\n]*\n([\s\S]*?)\n>\n+(?=随着 \$n\$ 增大)/,
+  );
+
+  assert.ok(example, "expected an example callout nested in the bounds explainer");
+
+  for (const line of example[1].trimEnd().split("\n")) {
+    assert.match(line, /^> >/, `nested example line must start with \"> >\": ${line}`);
+  }
+});
+
+test("places set-limit indices below limsup and liminf in inline explanations", async () => {
+  const post = await readFile(
+    "src/content/posts/如何理解实变函数的上下极限.md",
+    "utf8",
+  );
+
+  assert.match(
+    post,
+    /\$x\\in\\displaystyle\\limsup\\limits_\{n\\to\\infty\}A_n\$/,
+  );
+  assert.match(
+    post,
+    /\$x\\in\\displaystyle\\liminf\\limits_\{n\\to\\infty\}A_n\$/,
+  );
+  assert.match(
+    post,
+    /共同的集合记为 \$\\displaystyle\\lim\\limits_\{n\\to\\infty\}A_n\$/,
+  );
+});
+
 function inlineMath(markdown) {
   const spans = [];
 
