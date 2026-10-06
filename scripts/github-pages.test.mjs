@@ -35,3 +35,14 @@ test("shows deployment badges and the content license", async () => {
   assert.match(footer, /Content: CC BY-NC-SA 4\.0\./);
   assert.doesNotMatch(footer, /allRightsReserved/);
 });
+
+test("notifies IndexNow only after deployment", async () => {
+  const workflow = await readFile(".github/workflows/deploy.yml", "utf8");
+
+  assert.match(workflow, /INDEXNOW_KEY: \$\{\{ secrets\.INDEXNOW_KEY \}\}/);
+  assert.match(workflow, /fetch-depth: 0/);
+  assert.match(workflow, /pnpm indexnow:prepare/);
+  assert.match(workflow, /indexnow:\n    needs: deploy/);
+  assert.match(workflow, /actions\/download-artifact@v4/);
+  assert.match(workflow, /pnpm indexnow:submit/);
+});
