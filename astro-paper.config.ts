@@ -3,13 +3,14 @@ import { defineAstroPaperConfig } from "./src/types/config";
 export default defineAstroPaperConfig({
   site: {
     url: "https://blog.cavill.site/",
-    title: "Cavill's Blog",
-    description: "A minimal, responsive and SEO-friendly Astro blog theme.",
-    author: "Sat Naing",
-    profile: "https://satna.ing",
+    title: "Cavill 的博客",
+    description:
+      "Cavill 的个人技术博客，记录计算机科学、数学和软件工程的学习与实践。",
+    author: "Cavill",
+    profile: "https://github.com/xjn2005",
     ogImage: "default-og.jpg",
-    lang: "en",
-    timezone: "Asia/Bangkok",
+    lang: "zh-CN",
+    timezone: "Asia/Shanghai",
     dir: "ltr",
   },
   posts: {

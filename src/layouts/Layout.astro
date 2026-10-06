@@ -24,6 +24,14 @@ const {
 } = Astro.props;
 
 const socialImageURL = new URL(ogImage, Astro.site ?? Astro.url);
+const ogLocale = site.lang.replace("-", "_");
+const webSiteData = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: site.title,
+  url: Astro.site?.href,
+  description: site.description,
+};
 const rssHref = getRelativeLocaleUrl(
   Astro.currentLocale ?? config.site.lang,
   "rss.xml"
@@ -59,9 +67,15 @@ const rssHref = getRelativeLocaleUrl(
     <meta name="description" content={description} />
     <meta name="author" content={site.author} />
     <link rel="sitemap" href={getAssetPath("sitemap-index.xml")} />
+    <script
+      type="application/ld+json"
+      is:inline
+      set:html={JSON.stringify(webSiteData)}
+    />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
+    <meta property="og:locale" content={ogLocale} />
     <meta property="og:site_name" content={site.title} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
