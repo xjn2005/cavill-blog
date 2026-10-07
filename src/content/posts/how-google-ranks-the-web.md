@@ -84,8 +84,6 @@ Each row represents the current webpage, and each entry gives the probability of
 >
 > The choice does not matter as long as the convention remains consistent.
 
-
-
 Now, instead of tracking the exact location of the surfer, we can describe their location using a probability distribution.
 
 For example, let

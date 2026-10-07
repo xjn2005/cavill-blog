@@ -22,8 +22,6 @@ draft: false
 
 ![](https://cdn.jsdelivr.net/gh/xjn2005/my-blog-images/img/20260810145911288.png "大佬的操作永远是这么朴实无华")
 
-
-
 ## Question：非负权有向图上的单源最短路径
 
 设有一个**带权有向图** $G = (V, E)$。其中：
@@ -72,7 +70,6 @@ $$
 
 每个有限的 $d[v]$ 都来自一条实际发现的 $s$ 到 $v$ 的路径，所以 $\delta(s, v) \le d[v]$。若结论不成立，只可能是 $\delta(s, u) < d[u]$。取一条从 $s$ 到 $u$ 的真实最短路径 $P$。
 
-
 因为 $s \in S$ 而 $u \in U$，沿着 $P$ 前进时必然会第一次从 $S$ 走到 $U$。设跨越边界的边为 $a \rightarrow b$：
 
 ![](https://cdn.jsdelivr.net/gh/xjn2005/my-blog-images/img/20260810163909505.png)
@@ -82,6 +79,7 @@ $$
 ### 关键不等式
 
 1. **$a$ 的距离已经正确。** 归纳假设给出：
+
    $$
    d[a] = \delta(s, a)
    $$

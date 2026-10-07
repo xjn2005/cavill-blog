@@ -57,7 +57,7 @@ test("keeps the upper and lower bounds explainer inside its callout", async () =
   );
 
   const example = post.match(
-    /> > \[!example\][^\n]*\n([\s\S]*?)\n>\n+(?=随着 \$n\$ 增大)/,
+    /> > \[!example\][^\n]*\n([\s\S]*?)\n(?:>\n)?\n+(?=随着 \$n\$ 增大)/,
   );
 
   assert.ok(example, "expected an example callout nested in the bounds explainer");

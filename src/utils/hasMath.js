@@ -130,7 +130,6 @@ export function hasMath(markdown) {
   const body = stripCode(markdown);
 
   return (
-    hasUnescapedPair(body, "$$", "$$") ||
-    hasUnescapedInlineDollarPair(body)
+    hasUnescapedPair(body, "$$", "$$") || hasUnescapedInlineDollarPair(body)
   );
 }
