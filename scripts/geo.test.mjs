@@ -41,3 +41,12 @@ test("publishes complete article and breadcrumb JSON-LD from existing post data"
   assert.match(postPage, /keywords=\{tags\}/);
   assert.match(postPage, /\{wordCount\}/);
 });
+
+test("allows ChatGPT Search while blocking model-training crawls", async () => {
+  const robots = await readFile("src/pages/robots.txt.ts", "utf8");
+
+  assert.match(robots, /User-agent: OAI-SearchBot\s+Allow: \//);
+  assert.match(robots, /User-agent: GPTBot\s+Disallow: \//);
+  assert.match(robots, /User-agent: \*\s+Allow: \//);
+  assert.match(robots, /Sitemap: \$\{sitemapURL\.href\}/);
+});
