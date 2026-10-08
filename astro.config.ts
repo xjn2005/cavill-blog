@@ -23,6 +23,7 @@ import {
 } from "@shikijs/transformers";
 import { transformerFileName } from "./src/utils/transformers/fileName";
 import rehypeImageCaptions from "./src/utils/rehypeImageCaptions.js";
+import { calloutOptions } from "./src/config/callouts";
 import config from "./astro-paper.config";
 
 export default defineConfig({
@@ -55,7 +56,11 @@ export default defineConfig({
         remarkToc,
         [remarkCollapse, { test: "Table of contents" }],
       ],
-      rehypePlugins: [rehypeCallouts, rehypeKatex, rehypeImageCaptions],
+      rehypePlugins: [
+        [rehypeCallouts, calloutOptions],
+        rehypeKatex,
+        rehypeImageCaptions,
+      ],
     }),
     shikiConfig: {
       themes: { light: "min-light", dark: "night-owl" },

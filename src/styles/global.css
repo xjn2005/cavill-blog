@@ -3,6 +3,11 @@
 @import "./typography.css";
 @import "rehype-callouts/theme/obsidian";
 
+[data-callout="rant"] {
+  --rc-color-light: #5865c9;
+  --rc-color-dark: #aeb7ff;
+}
+
 /* Keep table grids legible against the tinted callout background. */
 .callout table th,
 .callout table td {
