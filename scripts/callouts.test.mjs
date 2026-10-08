@@ -24,10 +24,10 @@ test("gives the rant callout its dedicated light and dark colors", async () => {
 
   assert.match(
     styles,
-    /\[data-callout=['"]rant['"]\][\s\S]*--rc-color-light:\s*#5865c9/i,
+    /\[data-callout=['"]rant['"]\][\s\S]*--rc-color-light:\s*#467489/i,
   );
   assert.match(
     styles,
-    /\[data-callout=['"]rant['"]\][\s\S]*--rc-color-dark:\s*#aeb7ff/i,
+    /\[data-callout=['"]rant['"]\][\s\S]*--rc-color-dark:\s*#9dcedd/i,
   );
 });

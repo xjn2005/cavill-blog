@@ -4,8 +4,8 @@
 @import "rehype-callouts/theme/obsidian";
 
 [data-callout="rant"] {
-  --rc-color-light: #5865c9;
-  --rc-color-dark: #aeb7ff;
+  --rc-color-light: #467489;
+  --rc-color-dark: #9dcedd;
 }
 
 /* Keep table grids legible against the tinted callout background. */
