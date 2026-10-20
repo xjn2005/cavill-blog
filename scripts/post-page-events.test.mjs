@@ -14,7 +14,15 @@ test("runs the Node tests in CI", async () => {
 
 test("binds post-wide event listeners once", async () => {
   const page = await readFile("src/pages/posts/[...slug]/index.astro", "utf8");
+  const backToTop = await readFile(
+    "src/pages/posts/[...slug]/_components/BackToTopButton.astro",
+    "utf8",
+  );
 
   assert.match(page, /if \(window\.__postProgressBound\) return;/);
   assert.match(page, /if \(!window\.__postScrollRestoreBound\)/);
+  assert.match(backToTop, /new AbortController\(\)/);
+  assert.match(backToTop, /signal: controller\.signal/);
+  assert.match(backToTop, /passive: true/);
+  assert.match(backToTop, /astro:before-swap/);
 });

@@ -23,6 +23,7 @@ import {
 } from "@shikijs/transformers";
 import { transformerFileName } from "./src/utils/transformers/fileName";
 import rehypeImageCaptions from "./src/utils/rehypeImageCaptions.js";
+import rehypeImagePerformance from "./src/utils/rehypeImagePerformance.js";
 import { calloutOptions } from "./src/config/callouts";
 import config from "./astro-paper.config";
 
@@ -60,6 +61,7 @@ export default defineConfig({
         [rehypeCallouts, calloutOptions],
         rehypeKatex,
         rehypeImageCaptions,
+        rehypeImagePerformance,
       ],
     }),
     shikiConfig: {
@@ -85,7 +87,7 @@ export default defineConfig({
       fallbacks: ["monospace"],
       weights: [300, 400, 500, 600, 700],
       styles: ["normal", "italic"],
-      formats: ["woff", "ttf"],
+      formats: ["woff"],
     },
   ],
   env: {
