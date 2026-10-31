@@ -87,16 +87,54 @@ test("places set-limit indices below limsup and liminf in inline explanations", 
   );
 });
 
+test("ignores dollar signs in fenced code blocks when finding inline math", () => {
+  const markdown = [
+    "```powershell",
+    "$first = 1",
+    "$second = '、'",
+    "```",
+    "",
+    "正文中的 $x$ 应保留。",
+  ].join("\n");
+
+  assert.deepEqual(inlineMath(markdown), ["x"]);
+});
+
 function inlineMath(markdown) {
   const spans = [];
+  let fence = null;
+  const prose = markdown
+    .split(/\r?\n/)
+    .map(line => {
+      const match = line.match(/^ {0,3}(`{3,}|~{3,})(.*)$/);
 
-  for (let index = 0; index < markdown.length; index += 1) {
-    if (markdown[index] !== "$" || markdown[index - 1] === "\\") continue;
+      if (match) {
+        const marker = match[1];
 
-    const end = markdown.indexOf("$", index + 1);
+        if (!fence) {
+          fence = { character: marker[0], length: marker.length };
+        } else if (
+          marker[0] === fence.character &&
+          marker.length >= fence.length &&
+          match[2].trim() === ""
+        ) {
+          fence = null;
+        }
+
+        return "";
+      }
+
+      return fence ? "" : line;
+    })
+    .join("\n");
+
+  for (let index = 0; index < prose.length; index += 1) {
+    if (prose[index] !== "$" || prose[index - 1] === "\\") continue;
+
+    const end = prose.indexOf("$", index + 1);
     if (end === -1) break;
 
-    spans.push(markdown.slice(index + 1, end));
+    spans.push(prose.slice(index + 1, end));
     index = end;
   }
 
