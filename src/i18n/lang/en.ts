@@ -5,6 +5,7 @@ export default {
     home: "Home",
     posts: "Posts",
     tags: "Tags",
+    links: "Links",
     about: "About",
     archives: "Archives",
     search: "Search",
@@ -43,6 +44,11 @@ export default {
 
     tagsTitle: "Tags",
     tagsDesc: "All the tags used in posts.",
+
+    linksTitle: "Links",
+    linksDesc:
+      "这里收集我常去的个人网站与博客。如果你也有自己的网站，欢迎通过 Email 联系我交换友链。",
+    linksEmpty: "友链墙还是空的，期待第一位互联网邻居。",
 
     postsTitle: "Posts",
     postsDesc: "All the articles I've posted.",
