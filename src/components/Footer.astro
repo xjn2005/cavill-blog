@@ -20,7 +20,17 @@ const currentYear = new Date().getFullYear();
   <div
     class="border-border flex flex-col items-center justify-between border-t py-6 sm:flex-row-reverse sm:py-4"
   >
-    <Socials />
+    <div class="flex items-center gap-2">
+      <a href="https://blog.cavill.site/" class="shrink-0 leading-none">
+        <img
+          src="https://picgocloud.com/m/5c51c36c-707a-4905-b006-f9e368afb58c.gif"
+          width="88"
+          height="31"
+          alt="Cavill's Blog"
+        />
+      </a>
+      <Socials />
+    </div>
     <div class="my-2 flex flex-col items-center whitespace-nowrap sm:flex-row">
       <span>{t.footer.copyright} &#169; {currentYear}</span>
       <span class="hidden sm:inline">&nbsp;|&nbsp;</span>
