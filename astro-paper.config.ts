@@ -32,6 +32,11 @@ export default defineAstroPaperConfig({
   },
   socials: [
     { name: "github", url: "https://github.com/xjn2005" },
+    { name: "reddit", url: "https://www.reddit.com/user/SmokeNo4763/" },
+    {
+      name: "linkedin",
+      url: "https://www.linkedin.com/in/jianing-xu-96226b412/",
+    },
     { name: "mail", url: "mailto:2024210214023@stu.hznu.edu.cn" },
   ],
   shareLinks: [
