@@ -52,7 +52,7 @@ const ownButtonHtml = `<a href="https://blog.cavill.site/">
     <section aria-labelledby="link-to-me-title" class="mt-10">
       <h2 id="link-to-me-title" class="text-xl font-semibold">Link to me</h2>
       <div
-        class="border-border bg-muted/30 mt-4 flex flex-col items-start gap-5 rounded-lg border p-4 sm:flex-row"
+        class="border-border bg-muted/30 mt-4 flex flex-col items-start gap-5 rounded-lg border p-4 sm:flex-row sm:items-center"
       >
         <a href="https://blog.cavill.site/" class="shrink-0 leading-none">
           <img
@@ -62,21 +62,15 @@ const ownButtonHtml = `<a href="https://blog.cavill.site/">
             alt="Cavill's Blog"
           />
         </a>
-        <div class="min-w-0 flex-1">
-          <div class="flex flex-wrap items-center justify-between gap-2">
-            <p class="m-0 text-sm font-medium">完整的 88×31 卡片 HTML</p>
-            <button
-              type="button"
-              class="border-border hover:text-accent rounded border px-3 py-1 text-sm"
-              data-copy-link-to-me
-              data-copy-text={ownButtonHtml}
-            >
-              复制 HTML
-            </button>
-          </div>
-          <pre
-            class="border-border bg-background mt-3 overflow-x-auto rounded border p-3 text-sm"
-          ><code>{ownButtonHtml}</code></pre>
+        <div class="sm:ms-auto">
+          <button
+            type="button"
+            class="border-border hover:text-accent rounded border px-3 py-1 text-sm"
+            data-copy-link-to-me
+            data-copy-text={ownButtonHtml}
+          >
+            复制 HTML
+          </button>
           <p class="sr-only" data-copy-status aria-live="polite"></p>
         </div>
       </div>

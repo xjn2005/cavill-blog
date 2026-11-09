@@ -81,6 +81,8 @@ test("renders complete 88x31 HTML, copy feedback, and the empty friend wall", as
   assert.match(page, /已复制/);
   assert.match(page, /复制失败/);
   assert.match(page, /aria-live="polite"/);
+  assert.doesNotMatch(page, /<code>{ownButtonHtml}<\/code>/);
+  assert.doesNotMatch(page, /完整的 88×31 卡片 HTML/);
 
   assert.match(page, /friendLinks\.length > 0/);
   assert.match(page, /t\.pages\.linksEmpty/);
