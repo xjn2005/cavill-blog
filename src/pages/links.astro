@@ -1,0 +1,138 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
+import Main from "@/components/Main.astro";
+import Comments from "@/components/Comments.astro";
+import Footer from "@/components/Footer.astro";
+import { friendLinks } from "@/data/friendLinks";
+import { useTranslations } from "@/i18n";
+import config from "@/config";
+
+const locale = Astro.currentLocale ?? config.site.lang;
+const t = useTranslations(locale);
+
+const applicationHtml = `<a href="https://example.com/">
+  <img
+    src="https://example.com/button.gif"
+    width="88"
+    height="31"
+    alt="站点名称"
+  />
+</a>`;
+
+const ownButtonHtml = `<a href="https://blog.cavill.site/">
+  <img
+    src="https://picgocloud.com/m/5c51c36c-707a-4905-b006-f9e368afb58c.gif"
+    width="88"
+    height="31"
+    alt="Cavill's Blog"
+  />
+</a>`;
+---
+
+<Layout
+  title={`${t.pages.linksTitle} | ${config.site.title}`}
+  description={t.pages.linksDesc}
+>
+  <Header />
+
+  <Breadcrumb />
+
+  <Main pageTitle={t.pages.linksTitle} pageDesc={t.pages.linksDesc}>
+    <section aria-labelledby="application-format-title" class="mt-8">
+      <h2 id="application-format-title" class="text-xl font-semibold">
+        申请格式
+      </h2>
+      <pre
+        class="border-border bg-muted/30 mt-4 overflow-x-auto rounded-lg border p-4 text-sm"
+      ><code>{applicationHtml}</code></pre>
+    </section>
+
+    <section aria-labelledby="link-to-me-title" class="mt-10">
+      <h2 id="link-to-me-title" class="text-xl font-semibold">Link to me</h2>
+      <div
+        class="border-border bg-muted/30 mt-4 flex flex-col items-start gap-5 rounded-lg border p-4 sm:flex-row"
+      >
+        <a href="https://blog.cavill.site/" class="shrink-0 leading-none">
+          <img
+            src="https://picgocloud.com/m/5c51c36c-707a-4905-b006-f9e368afb58c.gif"
+            width="88"
+            height="31"
+            alt="Cavill's Blog"
+          />
+        </a>
+        <div class="min-w-0 flex-1">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <p class="m-0 text-sm font-medium">完整的 88×31 卡片 HTML</p>
+            <button
+              type="button"
+              class="border-border hover:text-accent rounded border px-3 py-1 text-sm"
+              data-copy-link-to-me
+              data-copy-text={ownButtonHtml}
+            >
+              复制 HTML
+            </button>
+          </div>
+          <pre
+            class="border-border bg-background mt-3 overflow-x-auto rounded border p-3 text-sm"
+          ><code>{ownButtonHtml}</code></pre>
+          <p class="sr-only" data-copy-status aria-live="polite"></p>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="friend-links-title" class="mt-10">
+      <h2 id="friend-links-title" class="text-xl font-semibold">
+        Friend Links
+      </h2>
+      {
+        friendLinks.length > 0 ? (
+          <ul class="mt-4 flex flex-wrap items-center gap-2">
+            {friendLinks.map(({ name, url, imageUrl }) => (
+              <li class="leading-none">
+                <a href={url} title={name}>
+                  <img src={imageUrl} width="88" height="31" alt={name} />
+                </a>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p class="border-border text-muted-foreground mt-4 rounded-lg border border-dashed px-6 py-12 text-center">
+            {t.pages.linksEmpty}
+          </p>
+        )
+      }
+    </section>
+
+    <Comments />
+  </Main>
+
+  <Footer />
+</Layout>
+
+<script>
+  function initLinkToMeCopy() {
+    const button = document.querySelector<HTMLButtonElement>(
+      "[data-copy-link-to-me]"
+    );
+    const status = document.querySelector<HTMLElement>("[data-copy-status]");
+
+    if (!button || !status || button.dataset.copyBound === "true") return;
+    button.dataset.copyBound = "true";
+
+    button.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(button.dataset.copyText ?? "");
+        button.textContent = "已复制";
+        status.textContent = "已复制";
+      } catch {
+        button.textContent = "复制失败";
+        status.textContent = "复制失败";
+      }
+    });
+  }
+
+  initLinkToMeCopy();
+  document.addEventListener("astro:page-load", initLinkToMeCopy);
+</script>

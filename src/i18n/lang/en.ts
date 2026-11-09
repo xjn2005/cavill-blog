@@ -47,7 +47,7 @@ export default {
 
     linksTitle: "Links",
     linksDesc:
-      "这里收集我常去的个人网站与博客。如果你也有自己的网站，欢迎通过 Email 联系我交换友链。",
+      "这里收录互联网的朋友们。只接受 88×31 的卡片形式——我觉得这些卡片是互联网的邮票，而我喜欢集邮。欢迎通过 Email 联系我，或在评论区留言。申请时请提供以下 HTML：",
     linksEmpty: "友链墙还是空的，期待第一位互联网邻居。",
 
     postsTitle: "Posts",
