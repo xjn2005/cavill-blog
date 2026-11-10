@@ -45,8 +45,7 @@ const ownButtonHtml = `<a href="https://blog.cavill.site/">
         申请格式
       </h2>
       <pre
-        class="border-border bg-muted/30 mt-4 overflow-x-auto rounded-lg border p-4 text-sm"
-      ><code>{applicationHtml}</code></pre>
+        class="border-border bg-muted/30 mt-4 overflow-x-auto rounded-lg border p-4 text-sm"><code>{applicationHtml}</code></pre>
     </section>
 
     <section aria-labelledby="link-to-me-title" class="mt-10">
@@ -80,23 +79,25 @@ const ownButtonHtml = `<a href="https://blog.cavill.site/">
       <h2 id="friend-links-title" class="text-xl font-semibold">
         Friend Links
       </h2>
-      {
-        friendLinks.length > 0 ? (
-          <ul class="mt-4 flex flex-wrap items-center gap-2">
-            {friendLinks.map(({ name, url, imageUrl }) => (
-              <li class="leading-none">
-                <a href={url} title={name}>
-                  <img src={imageUrl} width="88" height="31" alt={name} />
-                </a>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p class="border-border text-muted-foreground mt-4 rounded-lg border border-dashed px-6 py-12 text-center">
-            {t.pages.linksEmpty}
-          </p>
-        )
-      }
+      <div class="border-border mt-4 rounded-lg border border-dashed p-4">
+        {
+          friendLinks.length > 0 ? (
+            <ul class="flex flex-wrap items-center gap-2">
+              {friendLinks.map(({ name, url, imageUrl }) => (
+                <li class="leading-none">
+                  <a href={url}>
+                    <img src={imageUrl} width="88" height="31" alt={name} />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p class="text-muted-foreground py-8 text-center">
+              {t.pages.linksEmpty}
+            </p>
+          )
+        }
+      </div>
     </section>
 
     <Comments />

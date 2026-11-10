@@ -36,7 +36,7 @@ test("adds Links between Tags and About without removing header controls", async
   assert.match(english, /links: "Links"/);
 });
 
-test("renders complete 88x31 HTML, copy feedback, and the empty friend wall", async () => {
+test("renders complete 88x31 HTML, copy feedback, and the friend wall", async () => {
   const [page, data, english] = await Promise.all([
     readFile("src/pages/links.astro", "utf8"),
     readFile("src/data/friendLinks.ts", "utf8"),
@@ -86,13 +86,26 @@ test("renders complete 88x31 HTML, copy feedback, and the empty friend wall", as
 
   assert.match(page, /friendLinks\.length > 0/);
   assert.match(page, /t\.pages\.linksEmpty/);
-  assert.match(page, /width="88"[\s\S]*height="31"[\s\S]*alt={name}/);
+  assert.match(
+    page,
+    /<div\s+class="border-border mt-4 rounded-lg border border-dashed p-4"[\s\S]*friendLinks\.length > 0/,
+  );
+  assert.match(
+    page,
+    /<a href={url}>[\s\S]*<img src={imageUrl} width="88" height="31" alt={name} \/>[\s\S]*<\/a>/,
+  );
+  assert.doesNotMatch(page, /<a href={url}[^>]+>/);
 
   assert.match(data, /export type FriendLink = Readonly</);
   assert.match(data, /name: string;/);
   assert.match(data, /url: string;/);
   assert.match(data, /imageUrl: string;/);
-  assert.match(data, /friendLinks: readonly FriendLink\[\] = \[\]/);
+  assert.match(data, /name: "PaddySun"/);
+  assert.match(data, /url: "https:\/\/www\.paddysun\.top\/"/);
+  assert.match(
+    data,
+    /imageUrl: "https:\/\/cos\.paddysun\.top\/88x31\/paddy-88x31-clouds\.webp"/,
+  );
 
   assert.ok(page.indexOf("<Comments") > page.indexOf('id="friend-links-title"'));
 });
