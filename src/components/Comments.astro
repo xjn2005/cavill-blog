@@ -1,20 +1,37 @@
 <section class="mt-12" aria-label="评论">
-  <script
-    is:inline
-    data-astro-rerun
-    src="https://giscus.app/client.js"
-    data-repo="xjn2005/cavill-blog"
-    data-repo-id="R_kgDOTfq9Sg"
-    data-category="Comments"
-    data-category-id="DIC_kwDOTfq9Ss4DBsw9"
-    data-mapping="pathname"
-    data-strict="0"
-    data-reactions-enabled="1"
-    data-emit-metadata="0"
-    data-input-position="bottom"
-    data-theme="preferred_color_scheme"
-    data-lang="zh-CN"
-    data-loading="lazy"
-    crossorigin="anonymous"
-    async></script>
+  <div id="Comments"></div>
 </section>
+
+<script>
+  import { ArtalkKatexPlugin } from "@artalk/plugin-katex";
+  import Artalk from "artalk";
+  import "artalk/Artalk.css";
+  import "katex/dist/katex.min.css";
+
+  Artalk.use(ArtalkKatexPlugin);
+
+  let artalk: Artalk | undefined;
+
+  const destroyArtalk = () => {
+    artalk?.destroy();
+    artalk = undefined;
+  };
+
+  const initArtalk = () => {
+    destroyArtalk();
+
+    const el = document.querySelector<HTMLElement>("#Comments");
+    if (!el) return;
+
+    artalk = Artalk.init({
+      el,
+      server: "https://comment.cavill.site",
+      site: "Cavill Blog",
+      pageKey: location.pathname,
+      pageTitle: document.title,
+    });
+  };
+
+  document.addEventListener("astro:page-load", initArtalk);
+  document.addEventListener("astro:before-swap", destroyArtalk);
+</script>
