@@ -22,6 +22,13 @@ test("shares one configured Artalk component across posts and Links", async () =
   assert.match(comments, /site: "Cavill Blog"/);
   assert.match(comments, /pageKey: location\.pathname/);
   assert.match(comments, /pageTitle: document\.title/);
+  assert.match(comments, /darkMode: isDarkMode\(\)/);
+  assert.match(comments, /new MutationObserver/);
+  assert.match(comments, /setDarkMode\(darkMode\)/);
+  assert.match(
+    comments,
+    /getEl\(\)\.classList\.toggle\("atk-dark-mode", darkMode\)/,
+  );
   assert.match(comments, /astro:page-load/);
   assert.match(comments, /astro:before-swap/);
   assert.match(comments, /\.destroy\(\)/);

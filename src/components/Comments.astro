@@ -11,6 +11,18 @@
   Artalk.use(ArtalkKatexPlugin);
 
   let artalk: Artalk | undefined;
+  const isDarkMode = () => document.documentElement.classList.contains("dark");
+
+  const syncDarkMode = () => {
+    const darkMode = isDarkMode();
+    artalk?.setDarkMode(darkMode);
+    artalk?.getEl().classList.toggle("atk-dark-mode", darkMode);
+  };
+
+  new MutationObserver(syncDarkMode).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["class"],
+  });
 
   const destroyArtalk = () => {
     artalk?.destroy();
@@ -29,6 +41,7 @@
       site: "Cavill Blog",
       pageKey: location.pathname,
       pageTitle: document.title,
+      darkMode: isDarkMode(),
     });
   };
 
