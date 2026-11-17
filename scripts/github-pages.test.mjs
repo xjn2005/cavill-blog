@@ -19,8 +19,8 @@ test("deploys the built site to GitHub Pages", async () => {
   const workflow = await readFile(".github/workflows/deploy.yml", "utf8");
 
   assert.match(workflow, /branches: \[main\]/);
-  assert.match(workflow, /uses: actions\/upload-pages-artifact@v4/);
-  assert.match(workflow, /uses: actions\/deploy-pages@v4/);
+  assert.match(workflow, /uses: actions\/upload-pages-artifact@v5/);
+  assert.match(workflow, /uses: actions\/deploy-pages@v5/);
   assert.match(workflow, /path: \.\/dist/);
 });
 
@@ -43,6 +43,6 @@ test("notifies IndexNow only after deployment", async () => {
   assert.match(workflow, /fetch-depth: 0/);
   assert.match(workflow, /pnpm indexnow:prepare/);
   assert.match(workflow, /indexnow:\n    needs: deploy/);
-  assert.match(workflow, /actions\/download-artifact@v4/);
+  assert.match(workflow, /actions\/download-artifact@v7/);
   assert.match(workflow, /pnpm indexnow:submit/);
 });
