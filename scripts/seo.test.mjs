@@ -21,3 +21,15 @@ test("publishes Open Graph and WebSite metadata", async () => {
   assert.match(layout, /property="og:locale"/);
   assert.match(layout, /"@type": "WebSite"/);
 });
+
+test("describes how to use the Bernstein theorem", async () => {
+  const post = await readFile(
+    "src/content/posts/如何使用伯恩斯坦定理.md",
+    "utf8",
+  );
+
+  assert.match(
+    post,
+    /^description: "伯恩斯坦定理怎么用？本文通过三个典型例题讲解如何构造两个方向的单射、证明集合等势，并总结可复用的证明范式。"$/m,
+  );
+});

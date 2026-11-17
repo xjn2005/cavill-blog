@@ -87,6 +87,29 @@ test("places set-limit indices below limsup and liminf in inline explanations", 
   );
 });
 
+test("keeps the Bernstein proof as Markdown inside its disclosure", async () => {
+  const post = await readFile(
+    "src/content/posts/如何使用伯恩斯坦定理.md",
+    "utf8",
+  );
+  const proof = post.match(/<details>[\s\S]*?<\/details>/)?.[0];
+
+  assert.ok(proof, "expected the Bernstein proof disclosure");
+  assert.doesNotMatch(proof, /^ {4}\S/m);
+  assert.equal(
+    [...proof.matchAll(/^\$\$$/gm)].length,
+    10,
+    "expected five displayed formulas in the Bernstein proof",
+  );
+});
+
+test("only hides empty paragraphs in Markdown disclosures", async () => {
+  const typography = await readFile("src/styles/typography.css", "utf8");
+
+  assert.match(typography, /\[&>p:empty\]:hidden/);
+  assert.doesNotMatch(typography, /\[&_p\]:hidden/);
+});
+
 test("ignores dollar signs in fenced code blocks when finding inline math", () => {
   const markdown = [
     "```powershell",
